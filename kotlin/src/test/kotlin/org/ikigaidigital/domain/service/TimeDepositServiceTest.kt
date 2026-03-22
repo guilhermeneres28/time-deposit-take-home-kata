@@ -1,10 +1,10 @@
 package org.ikigaidigital.domain.service
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.offset
 import org.ikigaidigital.domain.calculator.BasicPlanCalculator
 import org.ikigaidigital.domain.calculator.PremiumPlanCalculator
 import org.ikigaidigital.domain.calculator.StudentPlanCalculator
-import org.ikigaidigital.domain.error.DomainError
 import org.ikigaidigital.domain.error.DomainResult
 import org.ikigaidigital.domain.model.Money
 import org.ikigaidigital.domain.model.PlanType
@@ -152,6 +152,6 @@ class TimeDepositServiceTest {
 
         assertThat(result.isSuccess()).isTrue()
         val updatedDeposit = (result as DomainResult.Success).value
-        assertThat(updatedDeposit.balance.toDouble()).isEqualTo(1000.0)
+        assertThat(updatedDeposit.balance.toDouble()).isCloseTo(1425.7609, offset(0.0001))
     }
 }

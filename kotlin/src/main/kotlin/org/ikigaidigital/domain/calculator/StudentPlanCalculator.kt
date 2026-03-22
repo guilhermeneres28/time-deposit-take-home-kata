@@ -9,12 +9,17 @@ import java.math.RoundingMode
  * Business Rule: 3% monthly interest rate with a 30-day grace period.
  * Special condition: No interest after 1 year (365 days).
  * 
- * IMPORTANT ASSUMPTION:
- * The requirement states "no interest is applied for the first 30 days".
- * We inferred this means interest starts accruing FROM day 31 onwards (grace period),
- * rather than interest only being paid at maturity date after the grace period.
+ * IMPORTANT ASSUMPTIONS (inferred from requirements):
+ * 1. "No interest is applied for the first 30 days" means interest starts 
+ *    accruing FROM day 31 onwards (grace period), rather than interest only 
+ *    being paid at maturity date after the grace period.
  *
- * If the actual requirement is to only pay interest at maturity, this logic would need to be adjusted accordingly.
+ * 2. "No interest after 1 year (365 days)" was interpreted as: interest 
+ *    continues to accrue UP TO 365 days, then STOPS calculating after that.
+ *    This means a deposit at 365 days receives full interest for those 365 days,
+ *    but a deposit at 366+ days receives the same interest as at day 365 (capped).
+ *    The requirement was ambiguous, so we inferred this behavior as the most
+ *    logical interpretation for a student savings plan with a time limit benefit.
  */
 @Component
 class StudentPlanCalculator : BaseInterestCalculator() {
@@ -27,8 +32,8 @@ class StudentPlanCalculator : BaseInterestCalculator() {
     
     override fun calculateMonths(days: Int): Int {
         if (days <= daysThreshold) return 0
-        if (days > YEAR_LIMIT) return 0 // TODO: Make sure this condition is correct, because the business rule states "no interest after 1 year (365 days)", needs to return at least the 365 days interest and stop calculate after 365 days
-        return ((days - daysThreshold - 1) / daysPerMonth) + 1
+        val effectiveDays = if (days > YEAR_LIMIT) YEAR_LIMIT else days
+        return ((effectiveDays - daysThreshold - 1) / daysPerMonth) + 1
     }
     
     companion object {

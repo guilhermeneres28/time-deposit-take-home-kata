@@ -3,6 +3,22 @@ package org.ikigaidigital
 import java.math.BigDecimal
 import java.math.RoundingMode
 
+/**
+ * Legacy TimeDepositCalculator - Preserved for backward compatibility.
+ * 
+ * NOTE: This class has been refactored into a new strategy-based architecture
+ * located in the domain.calculator package. The new implementation fixes a critical
+ * issue where interest was being calculated incorrectly as simple interest instead
+ * of compound interest, leading to accumulated calculation errors over time.
+ * 
+ * The new architecture uses:
+ * - Strategy Pattern for different plan types
+ * - Compound interest formula: balance * (1 + rate)^(months/12)
+ * - Proper handling of plan-specific rules (grace periods, time limits)
+ * 
+ * This legacy implementation is maintained to ensure existing integrations
+ * continue to work without breaking changes.
+ */
 class TimeDepositCalculator {
     fun updateBalance(xs: List<TimeDeposit>) {
         for (i in xs.indices) {
