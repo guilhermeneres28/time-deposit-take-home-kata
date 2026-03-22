@@ -24,7 +24,7 @@
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
         <java.version>17</java.version>
-        <kotlin.version>1.9.20</kotlin.version>
+        <kotlin.version>2.2.0</kotlin.version>
         <springdoc.version>2.3.0</springdoc.version>
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
