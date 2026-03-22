@@ -11,21 +11,21 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 
-@DisplayName("BasicPlanCalculator Tests")
-class BasicPlanCalculatorTest {
+@DisplayName("StudentPlanCalculator Tests")
+class StudentPlanCalculatorTest {
 
-    private val calculator = BasicPlanCalculator()
+    private val calculator = StudentPlanCalculator()
 
     @ParameterizedTest
-    @MethodSource("provideBasicPlanScenarios")
-    fun `should calculate correct interest for basic plan`(
+    @MethodSource("provideStudentPlanScenarios")
+    fun `should calculate correct interest for student plan`(
         initialBalance: Double,
         days: Int,
         expectedInterest: Double
     ) {
         val deposit = TimeDeposit(
             id = 1L,
-            planType = PlanType.BASIC,
+            planType = PlanType.STUDENT,
             balance = Money.of(initialBalance),
             days = days
         )
@@ -39,28 +39,32 @@ class BasicPlanCalculatorTest {
 
     companion object {
         @JvmStatic
-        fun provideBasicPlanScenarios() = listOf(
+        fun provideStudentPlanScenarios() = listOf(
             Arguments.of(1000.0, 0, 0.0),
             Arguments.of(1000.0, 1, 0.0),
             Arguments.of(1000.0, 15, 0.0),
             Arguments.of(1000.0, 30, 0.0),
             Arguments.of(5000.0, 30, 0.0),
-            Arguments.of(1000.0, 31, 10.0),
-            Arguments.of(5000.0, 31, 50.0),
-            Arguments.of(1000.0, 61, 20.1),
-            Arguments.of(5000.0, 61, 100.5),
-            Arguments.of(1000.0, 92, 30.301),
-            Arguments.of(5000.0, 92, 151.505),
-            Arguments.of(1000.0, 183, 61.5202),
-            Arguments.of(5000.0, 183, 307.6008),
-            Arguments.of(1000.0, 365, 126.8250),
-            Arguments.of(5000.0, 365, 634.1252),
-            Arguments.of(100.0, 31, 1.0),
-            Arguments.of(10000.0, 31, 100.0),
-            Arguments.of(1000.0, 32, 10.0),
-            Arguments.of(1000.0, 60, 10.0),
-            Arguments.of(1000.0, 90, 20.1),
-            Arguments.of(1000.0, 91, 30.301),
+            Arguments.of(1000.0, 31, 30.0),
+            Arguments.of(5000.0, 31, 150.0),
+            Arguments.of(1000.0, 61, 60.9),
+            Arguments.of(5000.0, 61, 304.5),
+            Arguments.of(1000.0, 92, 92.727),
+            Arguments.of(5000.0, 92, 463.635),
+            Arguments.of(1000.0, 183, 194.0523),
+            Arguments.of(5000.0, 183, 970.2615),
+            Arguments.of(1000.0, 365, 425.7609),
+            Arguments.of(5000.0, 365, 2128.8044),
+            Arguments.of(1000.0, 366, 0.0),
+            Arguments.of(5000.0, 366, 0.0),
+            Arguments.of(1000.0, 400, 0.0),
+            Arguments.of(5000.0, 400, 0.0),
+            Arguments.of(100.0, 31, 3.0),
+            Arguments.of(10000.0, 31, 300.0),
+            Arguments.of(1000.0, 32, 30.0),
+            Arguments.of(1000.0, 60, 30.0),
+            Arguments.of(1000.0, 90, 60.9),
+            Arguments.of(1000.0, 91, 92.727),
         )
     }
 }
