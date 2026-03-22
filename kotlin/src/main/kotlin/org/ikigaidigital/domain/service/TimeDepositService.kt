@@ -8,7 +8,9 @@ import org.ikigaidigital.domain.error.DomainResult
 import org.ikigaidigital.domain.model.Money
 import org.ikigaidigital.domain.model.PlanType
 import org.ikigaidigital.domain.model.TimeDeposit
+import org.springframework.stereotype.Service
 
+@Service
 class TimeDepositService(
     private val basicCalculator: BasicPlanCalculator,
     private val studentCalculator: StudentPlanCalculator,

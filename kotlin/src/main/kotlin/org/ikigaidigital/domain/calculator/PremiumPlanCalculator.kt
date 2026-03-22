@@ -1,5 +1,6 @@
 package org.ikigaidigital.domain.calculator
 
+import org.springframework.stereotype.Component
 import java.math.RoundingMode
 
 /**
@@ -14,6 +15,7 @@ import java.math.RoundingMode
  *
  * If the actual requirement is to only pay interest at maturity, this logic would need to be adjusted accordingly.
  */
+@Component
 class PremiumPlanCalculator : BaseInterestCalculator() {
     
     override val monthlyInterestRate = 0.05
