@@ -1,11 +1,6 @@
 package org.ikigaidigital.domain.calculator
 
-import org.ikigaidigital.domain.error.DomainResult
-import org.ikigaidigital.domain.model.Money
-import org.ikigaidigital.domain.model.TimeDeposit
-import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.math.pow
 
 /**
  * Calculates interest for Student Plan deposits.
@@ -20,36 +15,21 @@ import kotlin.math.pow
  *
  * If the actual requirement is to only pay interest at maturity, this logic would need to be adjusted accordingly.
  */
-class StudentPlanCalculator : InterestCalculator {
+class StudentPlanCalculator : BaseInterestCalculator() {
     
-    override fun calculate(deposit: TimeDeposit): DomainResult<Money> {
-        val monthlyRate = MONTHLY_INTEREST_RATE
-        val months = calculateMonths(deposit.days)
-        
-        if (months == 0) {
-            return DomainResult.success(Money.ZERO)
-        }
-        
-        val principal = deposit.balance.amount
-        val compoundFactor = (1.0 + monthlyRate).pow(months)
-        val finalAmount = principal.multiply(BigDecimal.valueOf(compoundFactor))
-        val interest = finalAmount.subtract(principal)
-        
-        return DomainResult.success(Money.of(interest.setScale(SCALE, ROUNDING_MODE)))
-    }
+    override val monthlyInterestRate = 0.03
+    override val daysThreshold = 30
+    override val daysPerMonth = 30
+    override val scale = 4
+    override val roundingMode = RoundingMode.HALF_UP
     
-    private fun calculateMonths(days: Int): Int {
-        if (days <= DAYS_THRESHOLD) return 0
-        if (days > YEAR_LIMIT) return 0
-        return ((days - DAYS_THRESHOLD - 1) / DAYS_PER_MONTH) + 1
+    override fun calculateMonths(days: Int): Int {
+        if (days <= daysThreshold) return 0
+        if (days > YEAR_LIMIT) return 0 // TODO: Make sure this condition is correct, because the business rule states "no interest after 1 year (365 days)", needs to return at least the 365 days interest and stop calculate after 365 days
+        return ((days - daysThreshold - 1) / daysPerMonth) + 1
     }
     
     companion object {
-        private const val MONTHLY_INTEREST_RATE = 0.03
-        private const val DAYS_THRESHOLD = 30
-        private const val DAYS_PER_MONTH = 30
         private const val YEAR_LIMIT = 365
-        private const val SCALE = 4
-        private val ROUNDING_MODE = RoundingMode.HALF_UP
     }
 }
