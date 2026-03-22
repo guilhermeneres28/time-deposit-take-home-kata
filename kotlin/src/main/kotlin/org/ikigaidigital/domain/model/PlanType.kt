@@ -6,7 +6,8 @@ enum class PlanType {
     PREMIUM;
 
     companion object {
-        fun fromString(value: String): PlanType? = 
+        fun fromString(value: String): PlanType = 
             entries.find { it.name.equals(value, ignoreCase = true) }
+                ?: throw IllegalArgumentException("Invalid plan type: $value")
     }
 }
